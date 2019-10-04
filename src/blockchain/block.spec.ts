@@ -17,3 +17,12 @@ test('creates an instance with parameters', () => {
 
   expect(block).toEqual(expected)
 })
+
+test('.genesis', () => {
+  const { genesis } = Block
+
+  expect(genesis.previousHash).toBeUndefined()
+  expect(genesis.timestamp).toBeDefined()
+  expect(genesis.hash).toBeDefined()
+  expect(genesis.data).toBeDefined()
+})
