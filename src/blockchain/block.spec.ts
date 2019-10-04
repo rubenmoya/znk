@@ -39,3 +39,16 @@ test('.mine', () => {
   expect(block.previousHash).toEqual(previousBlock.hash)
   expect(block.data).toEqual(data)
 })
+
+test('.toString', () => {
+  const block = Block.genesis
+
+  expect(block.toString()).toMatchInlineSnapshot(`
+    "Block
+          timestamp     : 665708400000
+          previousHash  : undefined
+          hash          : 01189998811991197253
+          data          : So this is how liberty dies…with thunderous applause.
+        "
+  `)
+})
