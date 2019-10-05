@@ -1,4 +1,5 @@
 import Block from './block'
+import validate from './modules/validate'
 
 class Blockchain {
   blocks: Block[]
@@ -14,6 +15,22 @@ class Blockchain {
     this.blocks.push(block)
 
     return block
+  }
+
+  replace(newBlocks: Block[] = []) {
+    if (newBlocks.length < this.blocks.length) {
+      throw Error('New chain is shorter than current one')
+    }
+
+    try {
+      validate(newBlocks)
+    } catch (error) {
+      throw Error('Received chain is invalid')
+    }
+
+    this.blocks = newBlocks
+
+    return this.blocks
   }
 }
 
