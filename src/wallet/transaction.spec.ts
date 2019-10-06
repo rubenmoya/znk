@@ -67,3 +67,42 @@ describe('.validate', () => {
     expect(Transaction.verify(transaction)).toBe(false)
   })
 })
+
+describe('.update', () => {
+  it('outputs the amount substracted from the wallet balance', () => {
+    const wallet = new Wallet()
+    const recipientAddress = 'dagobah'
+    const amount = 10
+    const transaction = Transaction.create(wallet, recipientAddress, amount)
+    const newAmount = 20
+
+    transaction.update(wallet, 'coruscant', newAmount)
+
+    const output = transaction.outputs.find(({ address }) => address === wallet.publicKey)
+
+    expect(output.amount).toEqual(wallet.balance - amount - newAmount)
+  })
+
+  it('outputs the amount added to the recipient wallet', () => {
+    const wallet = new Wallet()
+    const recipientAddress = 'dagobah'
+    const amount = 10
+    const transaction = Transaction.create(wallet, recipientAddress, amount)
+    const newRecipientAddress = 'coruscant'
+    const newAmount = 20
+
+    transaction.update(wallet, newRecipientAddress, newAmount)
+
+    const output = transaction.outputs.find(({ address }) => address === newRecipientAddress)
+
+    expect(output.amount).toEqual(newAmount)
+  })
+
+  it('inputs the balance of the wallet', () => {
+    const wallet = new Wallet()
+    const transaction = Transaction.create(wallet, 'dagobah', 50)
+    transaction.update(wallet, 'coruscant', 20)
+
+    expect(transaction.input.amount).toEqual(wallet.balance)
+  })
+})
