@@ -30,7 +30,8 @@
   "dependencies": {
     "@koa/router": "^8.0.1",
     "crypto-js": "^3.1.9-1",
-    "koa": "^2.8.2"
+    "koa": "^2.8.2",
+    "koa-body": "^4.1.1"
   },
   "jest": {
     "moduleFileExtensions": [
