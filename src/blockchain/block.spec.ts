@@ -1,4 +1,4 @@
-import Block from './block'
+import Block, { DIFFICULTY } from './block'
 
 test('creates an instance with parameters', () => {
   const expected = {
@@ -6,9 +6,16 @@ test('creates an instance with parameters', () => {
     previousHash: 'hello-there',
     hash: 'general-kenobi',
     data: 'You are a bold one',
+    nonce: 1337,
   }
 
-  const block = new Block(expected.timestamp, expected.previousHash, expected.hash, expected.data)
+  const block = new Block(
+    expected.timestamp,
+    expected.previousHash,
+    expected.hash,
+    expected.data,
+    expected.nonce,
+  )
 
   expect(block).toEqual(expected)
 })
@@ -24,10 +31,11 @@ test('.genesis', () => {
 
 test('.hash', () => {
   const { timestamp, hash: previoushash, data } = Block.genesis
-  const hash = Block.hash(timestamp, previoushash, data)
-  const expectedHash = 'fa59e7e1e0263fae8fa1185a6b81dc2e6908ca3c08f824636a89531ddb8ae1c2'
+  const hash = Block.hash(timestamp, previoushash, data, 1337)
 
-  expect(hash).toEqual(expectedHash)
+  expect(hash).toMatchInlineSnapshot(
+    `"c613cf5209431fbe8be5285fa0d94ce37d02438e7dd5cd995e6c502330591ec4"`,
+  )
 })
 
 test('.mine', () => {
@@ -38,6 +46,8 @@ test('.mine', () => {
   expect(block.hash.length).toEqual(64)
   expect(block.previousHash).toEqual(previousBlock.hash)
   expect(block.data).toEqual(data)
+  expect(block.hash.substring(0, DIFFICULTY)).toEqual('0'.repeat(DIFFICULTY))
+  expect(block.nonce).not.toEqual(0)
 })
 
 test('.toString', () => {
@@ -48,7 +58,8 @@ test('.toString', () => {
           timestamp     : 665708400000
           previousHash  : undefined
           hash          : 01189998811991197253
-          data          : So this is how liberty dies…with thunderous applause.
+          nonce         : 1
+          data          : So this is how liberty dies… with thunderous applause.
         "
   `)
 })
