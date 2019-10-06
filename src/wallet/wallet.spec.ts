@@ -20,10 +20,11 @@ test('has a publicKey', () => {
 
 test('.toString', () => {
   const wallet = new Wallet()
+  wallet.publicKey = 'Hello there'
 
   expect(wallet.toString()).toMatchInlineSnapshot(`
     "Wallet -
-          publicKey   : 042183c641ddc02a54f627865c2d7f657591bb93839e1d0c6857ecbb2cabe89b2a53a8837b612504c082a8f75a6b2d729e273a678f960595db85018e8b623101e3
+          publicKey   : Hello there
           balance     : 100
         "
   `)
