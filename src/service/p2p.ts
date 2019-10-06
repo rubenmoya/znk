@@ -35,7 +35,14 @@ class P2PService {
 
     socket.on('message', (message: string) => {
       const { type, value } = JSON.parse(message)
-      console.log({ type, value })
+
+      try {
+        if (type === MessageType.Blocks) {
+          this.blockchain.replace(value)
+        }
+      } catch (error) {
+        console.log(`[ws:message] error ${error}`)
+      }
     })
 
     const message = {
@@ -44,6 +51,10 @@ class P2PService {
     }
 
     socket.send(JSON.stringify(message))
+  }
+
+  sync() {
+    this.broadcast(MessageType.Blocks, this.blockchain.blocks)
   }
 
   broadcast(type: string, value: any) {
