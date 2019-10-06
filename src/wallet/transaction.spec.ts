@@ -50,3 +50,20 @@ test('inputs has a signature', () => {
 
   expect(transaction.input.signature).toEqual(wallet.sign(transaction.outputs))
 })
+
+describe('.validate', () => {
+  it('returns true for a valid transaction', () => {
+    const wallet = new Wallet()
+    const transaction = Transaction.create(wallet, 'dagobah', 50)
+
+    expect(Transaction.verify(transaction)).toBe(true)
+  })
+
+  it('returns false for an invalid transaction', () => {
+    const wallet = new Wallet()
+    const transaction = Transaction.create(wallet, 'dagobah', 50)
+    transaction.outputs[0].amount = 500
+
+    expect(Transaction.verify(transaction)).toBe(false)
+  })
+})

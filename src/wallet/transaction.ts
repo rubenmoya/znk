@@ -1,5 +1,6 @@
 import uuidV1 from 'uuid/V1'
 import Wallet from './wallet'
+import elliptic from '../utils/elliptic'
 
 class Transaction {
   id: string
@@ -12,7 +13,7 @@ class Transaction {
     this.outputs = []
   }
 
-  static create(senderWallet: Wallet, recipientAddress: string, amount: number) {
+  static create(senderWallet: Wallet, recipientAddress: string, amount: number): Transaction {
     const { balance, publicKey } = senderWallet
 
     if (amount > balance) {
@@ -31,6 +32,12 @@ class Transaction {
     }
 
     return transaction
+  }
+
+  static verify(transaction: Transaction): boolean {
+    const { input, outputs } = transaction
+
+    return elliptic.verifySignature(input.address, input.signature, outputs)
   }
 }
 
