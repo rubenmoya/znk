@@ -36,7 +36,7 @@ test('.hash', () => {
   const hash = Block.hash(timestamp, previoushash, data, 1337, 3)
 
   expect(hash).toMatchInlineSnapshot(
-    `"7f5171597b87e1bc3b0ad6b9f453cf0780acd7633bb131be7be96e36d8d9a128"`,
+    `"9fe39cc83748a0c445890d4d979c3522c22840b99751b9604e2fe0524ae524b0"`,
   )
 })
 
