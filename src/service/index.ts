@@ -1,13 +1,15 @@
 import Koa from 'koa'
 import Router from '@koa/router'
 import koaBody from 'koa-body'
-import Blockchain, { Block } from '../blockchain'
+import Blockchain from '../blockchain'
+import P2PService from './p2p'
 
 const { HTT_PORT = 3000 } = process.env
 
 const app = new Koa()
 const router = new Router()
 const blockchain = new Blockchain()
+const p2pService = new P2PService(blockchain)
 
 // Use logger
 app.use(async (ctx, next) => {
@@ -46,4 +48,5 @@ app.use(router.allowedMethods())
 
 app.listen(HTT_PORT, () => {
   console.log(`Service HTTP:${HTT_PORT} listening...`)
+  p2pService.listen()
 })
