@@ -7,6 +7,7 @@ test('creates an instance with parameters', () => {
     hash: 'general-kenobi',
     data: 'You are a bold one',
     nonce: 1337,
+    difficulty: 3,
   }
 
   const block = new Block(
@@ -15,6 +16,7 @@ test('creates an instance with parameters', () => {
     expected.hash,
     expected.data,
     expected.nonce,
+    expected.difficulty,
   )
 
   expect(block).toEqual(expected)
@@ -31,10 +33,10 @@ test('.genesis', () => {
 
 test('.hash', () => {
   const { timestamp, hash: previoushash, data } = Block.genesis
-  const hash = Block.hash(timestamp, previoushash, data, 1337)
+  const hash = Block.hash(timestamp, previoushash, data, 1337, 3)
 
   expect(hash).toMatchInlineSnapshot(
-    `"c613cf5209431fbe8be5285fa0d94ce37d02438e7dd5cd995e6c502330591ec4"`,
+    `"7f5171597b87e1bc3b0ad6b9f453cf0780acd7633bb131be7be96e36d8d9a128"`,
   )
 })
 
@@ -46,7 +48,7 @@ test('.mine', () => {
   expect(block.hash.length).toEqual(64)
   expect(block.previousHash).toEqual(previousBlock.hash)
   expect(block.data).toEqual(data)
-  expect(block.hash.substring(0, DIFFICULTY)).toEqual('0'.repeat(DIFFICULTY))
+  expect(block.hash.substring(0, block.difficulty)).toEqual('0'.repeat(block.difficulty))
   expect(block.nonce).not.toEqual(0)
 })
 
@@ -59,6 +61,7 @@ test('.toString', () => {
           previousHash  : undefined
           hash          : 01189998811991197253
           nonce         : 1
+          difficulty    : 3
           data          : So this is how liberty dies… with thunderous applause.
         "
   `)
