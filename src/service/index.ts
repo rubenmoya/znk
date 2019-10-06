@@ -37,6 +37,8 @@ router.post('/mine', ctx => {
   const { data } = ctx.request.body
   const block = blockchain.addBlock(data)
 
+  p2pService.sync()
+
   ctx.body = {
     blocks: blockchain.blocks.length,
     block,
