@@ -18,6 +18,13 @@ test('has a publicKey', () => {
   expect(wallet.publicKey).toHaveLength(130)
 })
 
+test('.sign', () => {
+  const wallet = new Wallet()
+  const signature = wallet.sign('Amidala')
+
+  expect(typeof signature).toEqual('object')
+})
+
 test('.toString', () => {
   const wallet = new Wallet()
   wallet.publicKey = 'Hello there'
