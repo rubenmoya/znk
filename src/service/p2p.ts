@@ -4,8 +4,9 @@ import Blockchain from '../blockchain'
 const { P2P_PORT = 5000, PEERS } = process.env
 const peers = PEERS ? PEERS.split(',') : []
 
-const enum MessageType {
+export const enum MessageType {
   Blocks = 'blocks',
+  Transaction = 'transaction',
 }
 
 class P2PService {
@@ -39,9 +40,12 @@ class P2PService {
       try {
         if (type === MessageType.Blocks) {
           this.blockchain.replace(value)
+        } else if (type === MessageType.Transaction) {
+          this.blockchain.memoryPool.addOrUpdate(value)
         }
       } catch (error) {
         console.log(`[ws:message] error ${error}`)
+        throw Error(error)
       }
     })
 

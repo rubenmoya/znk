@@ -2,7 +2,7 @@ import Koa from 'koa'
 import Router from '@koa/router'
 import koaBody from 'koa-body'
 import Blockchain from '../blockchain'
-import P2PService from './p2p'
+import P2PService, { MessageType } from './p2p'
 import Wallet from '../wallet/wallet'
 
 const { HTT_PORT = 3000 } = process.env
@@ -44,6 +44,7 @@ router.post('/transactions', ctx => {
 
   try {
     const transaction = wallet.createTransaction(recipient, amount)
+    p2pService.broadcast(MessageType.Transaction, transaction)
     ctx.body = { transaction }
   } catch (error) {
     ctx.body = { error: error.message }
