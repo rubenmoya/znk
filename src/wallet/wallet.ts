@@ -35,7 +35,7 @@ class Wallet {
       transaction = Transaction.create(this, recipientAddress, amount)
     }
 
-    this.blockchain.memoryPool.addOrUpdate(transaction)
+    return this.blockchain.memoryPool.addOrUpdate(transaction)
   }
 
   toString() {
