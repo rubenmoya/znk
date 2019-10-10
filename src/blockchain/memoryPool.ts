@@ -16,6 +16,10 @@ class MemoryPool {
       this.transactions.push(transaction)
     }
   }
+
+  find(address) {
+    return this.transactions.find(({ input }) => input.address === address)
+  }
 }
 
 export default MemoryPool
