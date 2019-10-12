@@ -1,4 +1,5 @@
 import Wallet, { INITIAL_BALANCE } from './wallet'
+import Blockchain from '../blockchain'
 
 test('has some initial balance', () => {
   const wallet = new Wallet()
@@ -23,6 +24,19 @@ test('.sign', () => {
   const signature = wallet.sign('Amidala')
 
   expect(typeof signature).toEqual('object')
+})
+
+test('.calculateBalance', () => {
+  const blockchain = new Blockchain()
+  const wallet = new Wallet(blockchain)
+  const senderWallet = new Wallet(blockchain)
+
+  senderWallet.createTransaction(wallet.publicKey, 16)
+  senderWallet.createTransaction(wallet.publicKey, 16)
+
+  blockchain.addBlock(blockchain.memoryPool.transactions)
+
+  expect(wallet.calculateBalance()).toEqual(INITIAL_BALANCE + 32)
 })
 
 test('.toString', () => {
