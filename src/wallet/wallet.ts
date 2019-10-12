@@ -48,5 +48,5 @@ class Wallet {
   }
 }
 
-export const blockainWallet = new Wallet()
+export const blockchainWallet = new Wallet()
 export default Wallet

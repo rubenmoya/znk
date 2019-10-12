@@ -7,7 +7,7 @@ class Block {
   timestamp: number
   previousHash: string
   hash: string
-  data: string
+  data: any
   nonce: number
   difficulty: number
 
@@ -15,7 +15,7 @@ class Block {
     timestamp: number,
     previousHash: string,
     hash: string,
-    data: string,
+    data: any,
     nonce: number,
     difficulty: number,
   ) {
@@ -40,7 +40,7 @@ class Block {
     )
   }
 
-  static mine(previousBlock: Block, data: string) {
+  static mine(previousBlock: Block, data: any) {
     const { hash: previousHash } = previousBlock
     let hash
     let nonce = 0
@@ -60,7 +60,7 @@ class Block {
   static hash(
     timestamp: number,
     previousHash: string,
-    data: string,
+    data: any,
     nonce: number,
     difficulty: number,
   ): string {

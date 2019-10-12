@@ -33,3 +33,17 @@ test('updates the transaction if already exists', () => {
   expect(memoryPool.transactions).toHaveLength(1)
   expect(memoryPool.transactions[0]).toEqual(transaction)
 })
+
+test('.wipe', () => {
+  const wallet = new Wallet()
+  const transaction = Transaction.create(wallet, 'morty', 10)
+  const memoryPool = new MemoryPool()
+
+  memoryPool.addOrUpdate(transaction)
+
+  expect(memoryPool.transactions).toHaveLength(1)
+
+  memoryPool.wipe()
+
+  expect(memoryPool.transactions).toHaveLength(0)
+})

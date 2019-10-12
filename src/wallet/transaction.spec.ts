@@ -1,5 +1,5 @@
 import Transaction, { REWARD } from './transaction'
-import Wallet, { blockainWallet } from './wallet'
+import Wallet, { blockchainWallet } from './wallet'
 
 test('outputs the amount substracted from the wallet balance', () => {
   const wallet = new Wallet()
@@ -109,12 +109,14 @@ describe('.update', () => {
 
 describe('.reward', () => {
   const wallet = new Wallet()
-  const transaction = Transaction.reward(wallet, blockainWallet)
+  const transaction = Transaction.reward(wallet, blockchainWallet)
 
   const outputMiner = transaction.outputs.find(({ address }) => address === wallet.publicKey)
-  const outputBlockchain = transaction.outputs.find(({ address }) => address === wallet.publicKey)
+  const outputBlockchain = transaction.outputs.find(
+    ({ address }) => address === blockchainWallet.publicKey,
+  )
 
   expect(transaction.outputs).toHaveLength(2)
   expect(outputMiner.amount).toEqual(REWARD)
-  expect(outputBlockchain.amount).toEqual(blockainWallet.balance - REWARD)
+  expect(outputBlockchain.amount).toEqual(blockchainWallet.balance - REWARD)
 })

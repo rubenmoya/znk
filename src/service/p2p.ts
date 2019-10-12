@@ -7,6 +7,7 @@ const peers = PEERS ? PEERS.split(',') : []
 export const enum MessageType {
   Blocks = 'blocks',
   Transaction = 'transaction',
+  Wipe = 'wipe_memorypool',
 }
 
 class P2PService {
@@ -38,11 +39,13 @@ class P2PService {
       const { type, value } = JSON.parse(message)
 
       try {
-        if (type === MessageType.Blocks) {
-          this.blockchain.replace(value)
-        } else if (type === MessageType.Transaction) {
-          this.blockchain.memoryPool.addOrUpdate(value)
-        }
+        // if (type === MessageType.Blocks) {
+        //   this.blockchain.replace(value)
+        // } else if (type === MessageType.Transaction) {
+        //   this.blockchain.memoryPool.addOrUpdate(value)
+        // } else if (type === MessageType.Wipe) {
+        //   this.blockchain.memoryPool.wipe()
+        // }
       } catch (error) {
         console.log(`[ws:message] error ${error}`)
         throw Error(error)
@@ -61,7 +64,7 @@ class P2PService {
     this.broadcast(MessageType.Blocks, this.blockchain.blocks)
   }
 
-  broadcast(type: string, value: any) {
+  broadcast(type: string, value?: any) {
     console.log(`[ws:broadcast] ${type} received...`)
     const message = JSON.stringify({ type, value })
     this.sockets.forEach(socket => socket.send(message))

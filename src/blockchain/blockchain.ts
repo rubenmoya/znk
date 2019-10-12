@@ -1,6 +1,7 @@
 import Block from './block'
 import validate from './modules/validate'
 import MemoryPool from './memoryPool'
+import Transaction from '../wallet/transaction'
 
 class Blockchain {
   blocks: Block[]
@@ -11,7 +12,7 @@ class Blockchain {
     this.memoryPool = new MemoryPool()
   }
 
-  addBlock(data: string) {
+  addBlock(data: Transaction[]) {
     const previousBlock = this.blocks[this.blocks.length - 1]
     const block = Block.mine(previousBlock, data)
 

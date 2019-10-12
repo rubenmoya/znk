@@ -4,6 +4,7 @@ import koaBody from 'koa-body'
 import Blockchain from '../blockchain'
 import P2PService, { MessageType } from './p2p'
 import Wallet from '../wallet/wallet'
+import Miner from '../miner/miner'
 
 const { HTT_PORT = 3000 } = process.env
 
@@ -11,7 +12,9 @@ const app = new Koa()
 const router = new Router()
 const blockchain = new Blockchain()
 const wallet = new Wallet(blockchain)
+const walletMiner = new Wallet(blockchain, 0)
 const p2pService = new P2PService(blockchain)
+const miner = new Miner(blockchain, p2pService, walletMiner)
 
 // Use logger
 app.use(async (ctx, next) => {
@@ -60,6 +63,15 @@ router.post('/mine', ctx => {
   ctx.body = {
     blocks: blockchain.blocks.length,
     block,
+  }
+})
+
+router.get('/mine/transactions', ctx => {
+  try {
+    const block = miner.mine()
+    ctx.body = { block }
+  } catch (error) {
+    ctx.body = { error: error.message }
   }
 })
 
