@@ -2,6 +2,8 @@ import uuidV1 from 'uuid/V1'
 import Wallet from './wallet'
 import elliptic from '../utils/elliptic'
 
+export const REWARD = 1
+
 class Transaction {
   id: string
   input: any
@@ -42,6 +44,10 @@ class Transaction {
       address: senderWallet.publicKey,
       signature: senderWallet.sign(transaction.outputs),
     }
+  }
+
+  static reward(minerWallet: Wallet, blockchainWallet: Wallet): Transaction {
+    return this.create(blockchainWallet, minerWallet.publicKey, REWARD)
   }
 
   update(senderWallet: Wallet, recipientAddress: string, amount: number) {

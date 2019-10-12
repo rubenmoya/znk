@@ -1,18 +1,18 @@
 import hash from '../utils/hash'
 import elliptic, { KeyPair } from '../utils/elliptic'
-import Blockchain from '../blockchain'
+import Blockchain, { Block } from '../blockchain'
 import Transaction from './transaction'
 
 export const INITIAL_BALANCE = 100
 
 class Wallet {
   balance: number
-  blockchain: Blockchain
+  blockchain?: Blockchain
   keyPair: KeyPair
   publicKey: string
 
-  constructor(blockchain) {
-    this.balance = INITIAL_BALANCE
+  constructor(blockchain?: Blockchain, initialBalance = INITIAL_BALANCE) {
+    this.balance = initialBalance
     this.blockchain = blockchain
     this.keyPair = elliptic.createKeyPair()
     this.publicKey = this.keyPair.getPublic().encode('hex', false)
@@ -48,4 +48,5 @@ class Wallet {
   }
 }
 
+export const blockainWallet = new Wallet()
 export default Wallet
